@@ -1,4 +1,5 @@
 MyCarApp::Application.routes.draw do
+  # User, session and updated Static page routes
   resources :users
   resources :sessions, only: [:new, :create, :destroy]
   resources :cars,     only: [:create, :destroy]
@@ -9,9 +10,18 @@ MyCarApp::Application.routes.draw do
   match '/help',    to: 'static_pages#help',    via: 'get'
   match '/about',   to: 'static_pages#about',   via: 'get'
   match '/contact', to: 'static_pages#contact', via: 'get'
+
+  # API routes
   match '/a/pag/:pag_id/users/:id', to: 'users#show_api', via: 'get'
-  match '/a/pag/:pag_id/users/:id/cars/:vin/delete', to: 'cars#destroy', via: 'delete'
-  match '/a/pag/:pag_id/users/:id/cars/:vin/create', to: 'cars#create', via: 'post'
+  match '/a/pag/:pag_id/users/:id/cars/:vin/delete', 
+        to: 'cars#destroy', via: 'delete'
+  match '/a/pag/:pag_id/users/:id/cars/:vin/create', 
+        to: 'cars#create',  via: 'post'
+  match '/a/pag/:pag_id/signin',  to: 'sessions#new',     via: 'get'
+  match '/a/pag/:pag_id/users/:id/signout', to: 'sessions#destroy', via: 'delete'
+  match '/a/pag/:pag_id/signup',  to: 'users#new',        via: 'get'
+
+  # Static page routes (deprecated, see above)
   get "static_pages/home"
   get "static_pages/help"
   get "static_pages/about"
